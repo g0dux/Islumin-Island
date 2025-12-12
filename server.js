@@ -303,6 +303,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// ⚡ Healthcheck route (responde rápido para Railway)
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'ok', 
+        timestamp: Date.now(),
+        uptime: process.uptime(),
+        connections: io.engine.clientsCount
+    });
+});
+
 app.get('/api/rooms', (req, res) => {
     const roomList = Array.from(rooms.values())
         .map(room => room.getRoomInfo())
